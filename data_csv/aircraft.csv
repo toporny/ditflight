@@ -1,0 +1,17 @@
+code,type,units,manufacturer,range,tank_capacity
+A319,jet,metric,Airbus,3750,22142 kg
+A320,jet,metric,Airbus,12000,18700 kg
+A321,jet,metric,Airbus,12000,24343 kg
+A330,jet,metric,Airbus,13430,114075 kg
+737,jet,imperial,Boeing,5600,16487 kg
+747,jet,imperial,Boeing,9800,149258 kg
+757,jet,imperial,Boeing,7222,35666 kg
+767,jet,imperial,Boeing,7130,51844 kg
+777,jet,imperial,Boeing,9700,96230 kg
+BAE146,turboprop,metric,BAE,2909,9618 kg
+DC8,jet,imperial,Douglas,4800,109000 kg
+F50,turboprop,metric,Fokker,2055,40500 kg
+MD11,jet,imperial,McDonallDouglas,12670,9021 kg
+A400M,turboprop,metric,Airbus,3298,50500 kg
+C212,turboprop,metric,Airbus,1811,1558 kg
+V22,turboprop,imperial,Boeing,1622,5400 kg
