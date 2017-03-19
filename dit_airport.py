@@ -1,17 +1,18 @@
 class Airport():
+  
   def __init__(self, dataArray):
-    self.__airportId = dataArray[0]
-    self.__airportName = dataArray[1]
-    self.__airportCity = dataArray[2]
-    self.__airportCountry = dataArray[3]
-    self.__airportCode = dataArray[4]
-    self.__airportCode2 = dataArray[5]
-    self.__airportLatitude = dataArray[6]
+    self.__airportId          = dataArray[0]
+    self.__airportName        = dataArray[1]
+    self.__airportCity        = dataArray[2]
+    self.__airportCountry     = dataArray[3]
+    self.__airportCode        = dataArray[4]
+    self.__airportCode2       = dataArray[5]
+    self.__airportLatitude    = dataArray[6]
     self.__airporttLongtitude = dataArray[7]
-    self.__airportIdontKnow1 = dataArray[8]
-    self.__airportIdontKnow2 = dataArray[9]
-    self.__airportIdontKnow3 = dataArray[10]
-    self.__airportTimezone = dataArray[11]
+    self.__airportIdontKnow1  = dataArray[8]
+    self.__airportIdontKnow2  = dataArray[9]
+    self.__airportIdontKnow3  = dataArray[10]
+    self.__airportTimezone    = dataArray[11]
 
 
 

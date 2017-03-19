@@ -1,6 +1,9 @@
 import sys
 
 class Plane():
+  """
+  Class Plane and all converting methods mile<=>km
+  """
   def __init__(self, dataArray):
     self.__code = dataArray[0]
     self.__type = dataArray[1]
@@ -31,6 +34,9 @@ class Plane():
 
     
   def getRangeMile(self):
+    """
+    Recognizes units and returns mile range for plane
+    """
     if (self.__units == 'imperial'):
       return self.__units
     elif (self.__units == 'metric'):
@@ -41,6 +47,9 @@ class Plane():
 
 
   def getRangeKm(self):
+    """
+    Recognizes units and returns km range for plane
+    """
     if (self.__units == 'metric'):
       return self.__units
     elif (self.__units == 'imperial'):
