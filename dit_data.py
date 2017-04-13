@@ -83,7 +83,6 @@ class ditData():
      
   # gets array of planes
   def getArrayOfPlanes(self):
-    print(self.__aircraft_data)
     return self.__aircraft_data
 
 
