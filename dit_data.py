@@ -55,7 +55,7 @@ class ditData():
     # same with CURRENCY csv file
     self.__currencyRates = self.__getDataFromFile(self.__currencyrates_file, 4)
 
-    # same with CURRENCY csv file
+    # same with COUNTRY CURRENCY csv file
     self.__countryCurrency = self.__getDataFromFile(self.__countrycurrency_file, 20)
 
 
@@ -90,3 +90,13 @@ class ditData():
   # gets array of airports
   def getArrayOfAirports(self):
     return self.__airport_data
+
+
+  # gets array of currency
+  def getArrayOfCurrency(self):
+    return self.__currencyRates
+
+
+  # gets array of country Currency
+  def getArrayOfcountryCurrency(self):
+    return self.__countryCurrency
