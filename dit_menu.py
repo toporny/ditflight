@@ -41,11 +41,11 @@ class Menu():
 
     # 3-currency rates
     if (submenu_choosen == '3'):
-      self.__app.showCurrencyArray() 
+      self.__app.data.showCurrencyTable() 
 
      # 4-county currency
     if (submenu_choosen == '4'):
-      self.__app.showCountryCurrencyTable()
+      self.__app.data.showCountryCurrencyTable()
       print("4-country currency")
 
     return

@@ -1,10 +1,9 @@
 import csv
 import os.path
 import sys
+import prettytable
 sys.path.insert(0, './lib')
 sys.path.insert(0, './data_csv')
-
-from colorconsole import terminal
 
 
 class ditData():
@@ -23,6 +22,9 @@ class ditData():
     self.__aircraft_data = []
     self.__currencyRates = []
     self.__countryCurrency = []
+
+    self.__assocCurrencyRates = {}
+    self.__assocCountryCurrency = {}
 
 
     # Checks if all files exist
@@ -44,7 +46,7 @@ class ditData():
       print ("Fatal error occured:")
       for n in error_array:
         print (n, 'file does not exist!')
-      sys.exit(-1)
+      sys.exit(1)
 
     # check integrity and gets data from AIRCRAFT csv file
     self.__aircraft_data = self.__getDataFromFile(self.__aircraft_file, 6, True) # True means: "ignore first row"
@@ -58,6 +60,13 @@ class ditData():
     # same with COUNTRY CURRENCY csv file
     self.__countryCurrency = self.__getDataFromFile(self.__countrycurrency_file, 20)
 
+
+    # local helpers with indexes
+    for row in self.__currencyRates:
+      self.__assocCurrencyRates[row[1]] = [row[2], row[3]]  # currency rate for CURRENCY 
+
+    for row in self.__countryCurrency:
+      self.__assocCountryCurrency[row[15]] = row[14]  # currency rate for CURRENCY 
 
 
   # check integrity and gets data from file
@@ -86,9 +95,74 @@ class ditData():
     return self.__aircraft_data
 
 
+  # def getOneCurrency(self, currency):
+  #   return self.__assocCurrencyRates[currency]
+
+
   # gets array of airports
   def getArrayOfAirports(self):
-    return self.__airport_data
+    
+    new = []
+    error_currency = []
+    error_codes = []
+    for row in self.__airport_data:
+      # check if country exist in __airport_data
+      if row[3].upper() in self.__assocCountryCurrency:
+        tmp_currency_code = self.__assocCountryCurrency[row[3].upper()]
+        
+        # check if currency symbol exists in __assocCurrencyRates
+        if (tmp_currency_code in self.__assocCurrencyRates):
+          row.append(tmp_currency_code)
+          row.append(self.__assocCurrencyRates[tmp_currency_code])
+        else:
+          error_codes.append(tmp_currency_code)
+          row.append(False) # no currency code
+          row.append([0,0]) # no currency rate
+      else:
+        row.append(False)
+        row.append([0,0])
+        #print (row[3])
+        error_currency.append(row[3])
+      new.append(row)
+    
+    if (error_currency):
+      cleanlist = []
+      [cleanlist.append(x) for x in error_currency if x not in cleanlist]
+      print ("\nCSV files are inconsistent!!\nI can'f find currency rate for these countries:\n", cleanlist)
+
+    if (error_codes):
+      cleanlist = []
+      [cleanlist.append(x) for x in error_codes if x not in cleanlist]
+      print ("\nCSV files are inconsistent!!\nI can'f find currency codes for these codes", cleanlist)
+
+    # print (new)
+    # sys.exit(1)
+
+    return new
+
+
+
+
+  # show currency table
+  def showCurrencyTable(self):
+    x = prettytable.PrettyTable(["NAME","SYMBOL","RATE1","RATE2"])
+    for cur in self.__currencyRates:
+      x.add_row(cur)
+    print (x)
+
+
+  def showCountryCurrencyTable(self):
+    x = prettytable.PrettyTable(["COUNTRY","CODE", "NAME","SYMBOL"])
+    ignore_first_row = True
+    for row in self.__countryCurrency:
+      if (ignore_first_row):
+        ignore_first_row = False
+        continue
+      x.add_row( [row[0][:40], row[2], row[17],row[14] ] )
+    print (x)
+
+
+
 
 
   # gets array of currency
@@ -99,3 +173,10 @@ class ditData():
   # gets array of country Currency
   def getArrayOfcountryCurrency(self):
     return self.__countryCurrency
+
+
+  # gets array of country Currency
+  def getArrayOfcountryCurrency(self):
+    return self.__countryCurrency
+
+  

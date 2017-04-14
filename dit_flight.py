@@ -8,18 +8,18 @@ import dit_planes
 
 
 
-
 # this is main class. Keeps everything inside
 class ditFlight():
   
   def __init__(self):
-    __data = dit_data.ditData()
+    self.data = dit_data.ditData()
     #self.planesArray = __data.getArrayOfPlanes()
     # self.airportsArray = __data.getArrayOfAirports()
-    self.planes = dit_planes.Planes(__data.getArrayOfPlanes())
-    self.airports = dit_airports.Airports(__data.getArrayOfAirports())
-    self.currencyArray = __data.getArrayOfCurrency()
-    self.countryCurrency = __data.getArrayOfcountryCurrency()
+    self.planes = dit_planes.Planes(self.data.getArrayOfPlanes())
+    self.airports = dit_airports.Airports(self.data.getArrayOfAirports())
+    #self.currencies = dit_currencies.Currencies(__data.getArrayOfCurrency())
+    #self.currencyArray = __data.getArrayOfCurrency()
+    self.countryCurrency = self.data.getArrayOfcountryCurrency()
     self.price = dit_price.Price(self)
     self.menu = dit_menu.Menu(self)
 
@@ -43,16 +43,16 @@ class ditFlight():
 #Poland     ,Pologne,       PL, POL, 616, POL, pl,PL,PL,48,POL,PL,198,POL,PLN,POLAND,2,Zloty,985,Yes
 #South Sudan,Soudan du Sud, SS, SSD, 728, SSD, sd,,,211,,OD,,,SSP,SOUTH SUDAN,2,South Sudanese Pound,728,Yes
 
-  def showCountryCurrencyTable(self):
-    #print ("showCountryCurrencyTable")
-    x = prettytable.PrettyTable(["COUNTRY","CODE", "NAME","SYMBOL"])
-    ignore_first_row = True
-    for row in self.countryCurrency:
-      if (ignore_first_row):
-        ignore_first_row = False
-        continue
-      x.add_row( [row[0][:40], row[2], row[17],row[14] ] )
-    print (x)
+  # def showCountryCurrencyTable(self):
+  #   #print ("showCountryCurrencyTable")
+  #   x = prettytable.PrettyTable(["COUNTRY","CODE", "NAME","SYMBOL"])
+  #   ignore_first_row = True
+  #   for row in self.countryCurrency:
+  #     if (ignore_first_row):
+  #       ignore_first_row = False
+  #       continue
+  #     x.add_row( [row[0][:40], row[2], row[17],row[14] ] )
+  #   print (x)
 
 
   # def calculateDistance(airport1, airport2):
