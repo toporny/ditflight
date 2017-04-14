@@ -1,3 +1,5 @@
+import math
+
 class Price():
 
 	def __init__(self, app):
@@ -46,23 +48,62 @@ class Price():
 
 
 
+	def __calculateDistance(self, lat1, long1, lat2, long2):
+
+		# Convert latitude and longtitude to radians
+		degress_to_radians = math.pi/180.0
+		phi = 90 - lat2
+
+		# phi = 90 - latitude
+		
+		phi1 = (90.0 - lat1)*degress_to_radians
+		phi2 = (90.0 - lat2)*degress_to_radians
+
+		# theta = longtitude
+		theta1 = long1*degress_to_radians
+		theta2 = long2*degress_to_radians
+
+		# Compute spherical distance from spherical coordinates
+
+		cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) + math.cos(phi1)*math.cos(phi2))
+		arc = math.acos(cos)
+
+		# Remember to multiply arc by the radius of the earth
+		return arc*6371
+
+
+
+
+
+
 	def __calculatePrice(self):
+
+		self.__aTravelPoints = ['DUB','GDA','WAW']
+
 		""" calculates the distance and price by sAairports array as a param """
-		if (isinstance(sAairports, list) and (len(sAairports)>1)):
+		if (isinstance(self.__aTravelPoints, list) and (len(self.__aTravelPoints)>1)):
 			pass # means ok
 		else:
 			raise ValueError('__calculatePrice() exception error. (self__aTravelPoints) has to be set in this place.')
+
+		dist = self.__calculateDistance(53.421333, -6.270075, 40.639751, -73.778925)
+		print (dist)
+
+		#distanceMatrix = 
 
 		# 1km. 1 litr?
 		# Density: 840 kg/m³
 		# port1: country, city, airport name, airport code, latitude, longitute, price / liter, price/kg, 
 		# matrix of distance
-		# 		port1,		port2,		port3,		port4,		port5
-		# port1		x			12									
-		# port2		12			x									
-		# port3								x						
-		# port4											x			
-		# port5														x
+		# 			port1,		port2,		port3,		port4,		port5
+		# port1		0			12			100			122			65
+		# port2		12			0			43			223			76
+		# port3		100			43			0			32			87
+		# port4		122			223			32			0			99
+		# port5		65			76			87			99			0
+
+
+
 
 
 
@@ -83,9 +124,6 @@ class Price():
 			print ("\nType airports separated by comma (max 5) or blank to exit.")
 			print ("For example: DUB,GDA,BVA")
 			sAairports = input()
-			if (sAairports == 'test'):
-				sAairports = 'dub,gda,waw'
-				print (sAairports )
 			if (self.__checkInputData(sAairports)):
 				print ("do calculation...")
 				break

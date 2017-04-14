@@ -5,7 +5,10 @@ def main(verbose=True):
 	"""
 	Main loop for application
 	"""
+	
+	# load all data and make whole big object name
 	app = dit_flight.ditFlight()
+
 	#config = flight_configuration.Configuration()
 
   

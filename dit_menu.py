@@ -33,11 +33,11 @@ class Menu():
 
     # 1-planes list selected
     if (submenu_choosen == '1'):
-      self.__app.showPlanesTable()
+      self.__app.planes.showPlanesTable()
 
     # 2-airports list selected
     if (submenu_choosen == '2'):
-      self.__app.showAirportTable()
+      self.__app.airports.showAirportsTable()
 
     # 3-currency rates
     if (submenu_choosen == '3'):

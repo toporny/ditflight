@@ -1,4 +1,42 @@
+import prettytable
 import sys
+
+class Planes():
+  """
+  Class Planes - keeps array of every plane
+  """
+  __planes = []
+  
+  def __init__(self, arrayOfPlanes):
+    """
+    makes array of plane objects
+    """    
+    for row in arrayOfPlanes:
+      tmp = Plane(row)
+      self.__planes.append(tmp)
+
+    #print(self.__planes)
+
+
+  def showPlanesTable(self):
+    """
+    shows all planes inside nice table
+    """    
+    x = prettytable.PrettyTable(['CODE','TYPE','UNITS','MANUFACTURER','RANGE','TANK_CAPACITY'])
+    for plane in self.__planes:
+      row = []
+      row.append(plane.getCode())
+      row.append(plane.getType())
+      row.append(plane.getUnits())
+      row.append(plane.getManufacturer())
+      row.append(plane.getRangeKm())
+      row.append(plane.getTankCapacity())
+      x.add_row(row)
+    print (x)
+
+
+
+
 
 class Plane():
   """
@@ -39,8 +77,8 @@ class Plane():
     """
     if (self.__units == 'imperial'):
       return self.__units
-    elif (self.__units == 'metric'):
-      return self.__units/1.60934      # 1 mile = 1.6093 km
+    elif (self.__range == 'metric'):
+      return int(self.__range)/1.60934      # 1 mile = 1.6093 km
     else:
       print ("Fatal error. Plane unit not specified.")
       sys.exit(-1)
@@ -53,7 +91,7 @@ class Plane():
     if (self.__units == 'metric'):
       return self.__units
     elif (self.__units == 'imperial'):
-      return self.__units*1.60934      # 1 mile = 1.6093 km
+      return int(self.__range)*1.60934      # 1 mile = 1.6093 km
     else:
       print ("Fatal error. Plane unit not specified.")
       sys.exit(-1)

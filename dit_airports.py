@@ -1,3 +1,32 @@
+import prettytable
+
+class Airports():
+  """
+  Class Planes - keeps array of every plane
+  """
+
+  __airports = []
+  
+  def __init__(self, arrayOfAirPorts):
+    for row in arrayOfAirPorts:
+      tmp = Airport(row)
+      self.__airports.append(tmp)
+
+  
+  def showAirportsTable(self):
+    x = prettytable.PrettyTable(["ID","NAME","CITY","COUNTRY","CODE"])
+    for airport in self.__airports:
+      row = []
+      row.append(airport.getAirportId())
+      row.append(airport.getAirportName()[:20])
+      row.append(airport.getAirportCity()[:15])
+      row.append(airport.getAirportCountry()[:13])
+      row.append(airport.getAirportCode()[:5])
+      x.add_row(row)
+    print (x)
+
+
+
 class Airport():
   
   def __init__(self, dataArray):
