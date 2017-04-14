@@ -22,7 +22,7 @@ class Planes():
     """
     shows all planes inside nice table
     """    
-    x = prettytable.PrettyTable(['CODE','TYPE','UNITS','MANUFACTURER','RANGE','TANK_CAPACITY'])
+    x = prettytable.PrettyTable(['CODE','TYPE','UNITS','MANUFACTURER','RANGE(km)'])
     for plane in self.__planes:
       row = []
       row.append(plane.getCode())
@@ -30,7 +30,6 @@ class Planes():
       row.append(plane.getUnits())
       row.append(plane.getManufacturer())
       row.append(plane.getRangeKm())
-      row.append(plane.getTankCapacity())
       x.add_row(row)
     print (x)
 
@@ -48,8 +47,7 @@ class Plane():
     self.__units = dataArray[2]
     self.__manufacturer = dataArray[3]
     self.__range = dataArray[4]
-    self.__tank = dataArray[5]
-    
+
   
   def getCode(self):
     return self.__code
@@ -63,12 +61,9 @@ class Plane():
     return self.__units
 
 
-  def getTankCapacity(self):
-    return self.__tank
-
   
   def getManufacturer(self):
-    return self.__units
+    return self.__manufacturer
 
     
   def getRangeMile(self):
@@ -76,9 +71,9 @@ class Plane():
     Recognizes units and returns mile range for plane
     """
     if (self.__units == 'imperial'):
-      return self.__units
+      return self.__range
     elif (self.__range == 'metric'):
-      return int(self.__range)/1.60934      # 1 mile = 1.6093 km
+      return round(int(self.__range)/1.60934)      # 1 mile = 1.6093 km
     else:
       print ("Fatal error. Plane unit not specified.")
       sys.exit(-1)
@@ -89,9 +84,9 @@ class Plane():
     Recognizes units and returns km range for plane
     """
     if (self.__units == 'metric'):
-      return self.__units
+      return self.__range
     elif (self.__units == 'imperial'):
-      return int(self.__range)*1.60934      # 1 mile = 1.6093 km
+      return round(int(self.__range)*1.60934)      # 1 mile = 1.6093 km
     else:
       print ("Fatal error. Plane unit not specified.")
       sys.exit(-1)

@@ -25,6 +25,9 @@ class Menu():
 
   def showMainMenu(self):
     choosen = input(self.__messagesMain)
+
+    if (choosen == "2"):
+      self.__app.price.getAirportsAndCalculate()
     return choosen;
 
 

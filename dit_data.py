@@ -49,7 +49,7 @@ class ditData():
       sys.exit(1)
 
     # check integrity and gets data from AIRCRAFT csv file
-    self.__aircraft_data = self.__getDataFromFile(self.__aircraft_file, 6, True) # True means: "ignore first row"
+    self.__aircraft_data = self.__getDataFromFile(self.__aircraft_file, 5, True) # True means: "ignore first row"
 
     # same with AIRCRAFT csv file
     self.__airport_data = self.__getDataFromFile(self.__airport_file, 12)

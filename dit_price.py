@@ -1,4 +1,6 @@
 import math
+import sys
+
 
 class Price():
 
@@ -10,6 +12,9 @@ class Price():
 
 
 	def __checkInputData(self, sAairports):
+		""" checks input format data """
+		""" expected format data is: DUB,GDA,LON """
+
 		good_data_format = True
 		self.__aTravelPoints = []
 
@@ -33,17 +38,28 @@ class Price():
 				print ("Wrong airport code (",x,").Every airport code should have exactly 3 chars !!!")
 				good_data_format = False
 
+		# test if input data array has duplicated values?
+		cleanlist = []
+		[cleanlist.append(x) for x in splitted if x not in cleanlist]
+		if (len(cleanlist) != len(splitted)):
+			print ("Every airport code has to be unique")
+			return False
+
+
 		# test if every airpot exist in datbase
 		for code in splitted:
 			code_airport_check = False
-			for airport in self.__app.airportsArray:
-				if (airport[4] == code):
-					code_airport_check = True
+			if (code in self.__app.airports.getAirportsSymbol()):
+				code_airport_check = True
 			if (code_airport_check == False):
 				print ("I can't find airport code (",code,") in database !!!")
-				good_data_format = False				
+				good_data_format = False
 
-		self.__aTravelPoints = splitted
+		# if everything is ok store points in self.__aTravelPoints array
+		if (good_data_format != False):
+			self.__aTravelPoints = splitted
+
+		#return array or false
 		return good_data_format
 
 
@@ -78,7 +94,6 @@ class Price():
 
 	def __calculatePrice(self):
 
-		self.__aTravelPoints = ['DUB','GDA','WAW']
 
 		""" calculates the distance and price by sAairports array as a param """
 		if (isinstance(self.__aTravelPoints, list) and (len(self.__aTravelPoints)>1)):
@@ -116,9 +131,14 @@ class Price():
 	def getAirportsAndCalculate(self):
 
 		# debug mode
-		self.__calculatePrice();
-		return 
+#		self.__calculatePrice();
+#		return 
+		#self.__checkInputData('DUB,GDA,ORK')
+		self.__aTravelPoints = ['DUB','GDA','WAW','GDA']
+		self.__calculatePrice()
 
+		sys.exit(1)
+		
 		success = False
 		while (not success):
 			print ("\nType airports separated by comma (max 5) or blank to exit.")

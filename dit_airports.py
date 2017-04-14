@@ -12,7 +12,14 @@ class Airports():
       tmp = Airport(row)
       self.__airports.append(tmp)
 
-  
+
+  def getAirportsSymbol(self):
+    airport_symbols = []
+    for airport in self.__airports:
+      airport_symbols.append(airport.getAirportCode())
+    return airport_symbols
+
+
   def showAirportsTable(self):
     x = prettytable.PrettyTable(["ID","NAME","CITY","COUNTRY","CODE"])
     for airport in self.__airports:
