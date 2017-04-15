@@ -1,5 +1,6 @@
 import math
 import sys
+import itertools
 
 
 class Price():
@@ -28,8 +29,8 @@ class Price():
 		splitted = sAairports.split(',')
 
 		# test if it is at least two airports and max 5
-		if ((len(splitted) <= 1) or (len(splitted) > 5)):
-			print ("please type minimum two airports codename and maximum 5 !!!")
+		if ((len(splitted) <= 1) or (len(splitted) > 6)):
+			print ("please type minimum two airports codename and maximum 6 !!!")
 			good_data_format = False
 
 		# test if every code has exactly three chars
@@ -39,11 +40,19 @@ class Price():
 				good_data_format = False
 
 		# test if input data array has duplicated values?
-		cleanlist = []
-		[cleanlist.append(x) for x in splitted if x not in cleanlist]
-		if (len(cleanlist) != len(splitted)):
-			print ("Every airport code has to be unique")
-			return False
+		# cleanlist = []
+		# [cleanlist.append(x) for x in splitted if x not in cleanlist]
+		# if (len(cleanlist) != len(splitted)):
+		# 	print ("Every airport code has to be unique")
+		# 	return False
+
+		#or codes can not be placed one by one
+		old = ''
+		for x in splitted:
+			if (x == old):
+				print ("The same airport codes can't be placed one by one!")
+				good_data_format = False
+			old = x;
 
 
 		# test if every airpot exist in datbase
@@ -64,8 +73,16 @@ class Price():
 
 
 
-	def __calculateDistance(self, lat1, long1, lat2, long2):
+	def __calculateDistance(self, lat1_string, long1_string, lat2_string, long2_string):
+		
+		lat1  = float (lat1_string)
+		long1 = float (long1_string)
+		lat2  = float (lat2_string)
+		long2 = float (long2_string)
 
+		if (lat1 == lat2) and (long1 == long2):
+			return 0
+		
 		# Convert latitude and longtitude to radians
 		degress_to_radians = math.pi/180.0
 		phi = 90 - lat2
@@ -76,8 +93,8 @@ class Price():
 		phi2 = (90.0 - lat2)*degress_to_radians
 
 		# theta = longtitude
-		theta1 = long1*degress_to_radians
-		theta2 = long2*degress_to_radians
+		theta1 = long1 * degress_to_radians
+		theta2 = long2 * degress_to_radians
 
 		# Compute spherical distance from spherical coordinates
 
@@ -85,7 +102,38 @@ class Price():
 		arc = math.acos(cos)
 
 		# Remember to multiply arc by the radius of the earth
-		return arc*6371
+		return round(arc*6371)
+
+
+	def __calculateTotalDistance(self, stopsArray):
+		""" calculate Total distance beetwean stops """
+
+		totalDistance = 0;
+		# extend stopsArray for return way (zero index position)
+		stopsArray.append(stopsArray[0])
+
+		index = 0
+		while (index < len(stopsArray)-1):
+			lat1  = self.__app.airports.getAirportDataBySymbol(stopsArray[index]).getAirportLatitude()
+			long1 = self.__app.airports.getAirportDataBySymbol(stopsArray[index]).getAirporttLongtitude()
+			lat2  = self.__app.airports.getAirportDataBySymbol(stopsArray[index+1]).getAirportLatitude()
+			long2 = self.__app.airports.getAirportDataBySymbol(stopsArray[index+1]).getAirporttLongtitude()
+			totalDistance = totalDistance + self.__calculateDistance(lat1, long1, lat2, long2)
+			index = index + 1
+
+		# print (stopsArray[len(stopsArray)-1])
+		# lat1  = self.__app.airports.getAirportDataBySymbol(stopsArray[index+1]).getAirportLatitude()
+		# long1 = self.__app.airports.getAirportDataBySymbol(stopsArray[index+1]).getAirporttLongtitude()
+		# lat2  = self.__app.airports.getAirportDataBySymbol(stopsArray[0]).getAirportLatitude()
+		# long2 = self.__app.airports.getAirportDataBySymbol(stopsArray[0]).getAirporttLongtitude()
+		# totalDistance = totalDistance + self.__calculateDistance(lat1, long1, lat2, long2)
+		
+		# print (totalDistance)
+
+		# sys.exit(1)
+		# print (stopsArray)
+		# print (totalDistance)
+		return totalDistance
 
 
 
@@ -93,36 +141,81 @@ class Price():
 
 
 	def __calculatePrice(self):
-
-
 		""" calculates the distance and price by sAairports array as a param """
 		if (isinstance(self.__aTravelPoints, list) and (len(self.__aTravelPoints)>1)):
 			pass # means ok
 		else:
 			raise ValueError('__calculatePrice() exception error. (self__aTravelPoints) has to be set in this place.')
 
-		dist = self.__calculateDistance(53.421333, -6.270075, 40.639751, -73.778925)
-		print (dist)
 
-		#distanceMatrix = 
+		# create matrix of permutation (all possible directions through all airports)
 
-		# 1km. 1 litr?
-		# Density: 840 kg/m³
-		# port1: country, city, airport name, airport code, latitude, longitute, price / liter, price/kg, 
-		# matrix of distance
-		# 			port1,		port2,		port3,		port4,		port5
-		# port1		0			12			100			122			65
-		# port2		12			0			43			223			76
-		# port3		100			43			0			32			87
-		# port4		122			223			32			0			99
-		# port5		65			76			87			99			0
+		list_before_first_element = self.__aTravelPoints
+		
+		#totalDistance  = self.__calculateTotalDistance(self.__aTravelPoints)
+
+		#sys.exit(1)
+
+		first_element = list_before_first_element.pop(0)
+		my_permutations = itertools.permutations(list_before_first_element)
+
+		# prepare array with all possible route (permutation calculation)
+		#all_possible_directions = []
+
+		result = []
+		for l in list(my_permutations):
+			final_list = [first_element]+list(l)
+			totalDistance  = self.__calculateTotalDistance(final_list)
+			result.append([final_list,totalDistance])
+			#print ('final_list',final_list)
+			#print ('totalDistance',totalDistance)
+			#all_possible_directions.append(final_list)
+		#print (all_possible_directions)
+
+		# find shortest way
+		final_way = result[0][0]
+		final_distance = result[0][1]
+		for way in result:
+			if (way[1]<final_distance):
+				final_way = way[0]
+				final_distance = way[1]
+
+print ("shortest way")
+print ([final_way,final_distance])
 
 
+		# most difficulatpart of this app:
+		# "calculate price for each possible route through selected airports"
+		#for direction in all_possible_directions:
 
+ 
+		# # create a Distance_matrix
+		# col = []
+		# for m in self.__aTravelPoints:
+		# 	row = []
+		# 	for n in self.__aTravelPoints:
+		# 		lat1  = self.__app.airports.getAirportDataBySymbol(n).getAirportLatitude()
+		# 		long1 = self.__app.airports.getAirportDataBySymbol(n).getAirporttLongtitude()
+		# 		lat2  = self.__app.airports.getAirportDataBySymbol(m).getAirportLatitude()
+		# 		long2 = self.__app.airports.getAirportDataBySymbol(m).getAirporttLongtitude()
+		# 		row.append(self.__calculateDistance(lat1, long1, lat2, long2) )
+				
+		# 	col.append(row)
+		# 	print (row)
+ 
 
+		# distanceMatrix = col
 
-
-
+		# # create a Airport_prices_matrix
+		# col = []
+		# for m in self.__aTravelPoints:
+		# 	row = []
+		# 	for n in self.__aTravelPoints:
+		# 		row.append(self.__app.airports.getAirportDataBySymbol(m).getCurrencyRate1() )
+		# 	col.append(row)
+		# 	print (row)
+		
+		# pricesMatrix = col
 
 
 
@@ -133,8 +226,9 @@ class Price():
 		# debug mode
 #		self.__calculatePrice();
 #		return 
-		#self.__checkInputData('DUB,GDA,ORK')
-		self.__aTravelPoints = ['DUB','GDA','WAW','GDA']
+
+		self.__checkInputData  ('DUB, GDN, BVA, WAW, ORK, BZG')
+		self.__aTravelPoints = ['DUB','GDN','BVA','WAW','ORK','BZG']
 		self.__calculatePrice()
 
 		sys.exit(1)

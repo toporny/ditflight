@@ -6,11 +6,20 @@ class Airports():
   """
 
   __airports = []
+
   
   def __init__(self, arrayOfAirPorts):
     for row in arrayOfAirPorts:
       tmp = Airport(row)
       self.__airports.append(tmp)
+
+  
+
+  def getAirportDataBySymbol(self, symbol):
+    for row in self.__airports:
+      if (row.getAirportCode() == symbol):
+        return row
+    raise ValueError('getAirportDataBySymbol exception error. Unknown symbol')
 
 
   def getAirportsSymbol(self):
@@ -18,6 +27,7 @@ class Airports():
     for airport in self.__airports:
       airport_symbols.append(airport.getAirportCode())
     return airport_symbols
+
 
 
   def showAirportsTable(self):
@@ -49,6 +59,11 @@ class Airport():
     self.__airportIdontKnow2  = dataArray[9]
     self.__airportIdontKnow3  = dataArray[10]
     self.__airportTimezone    = dataArray[11]
+    self.__currencyCode       = dataArray[12] # generated based currencyrates.csv ,countrycurrency.csv
+    self.__currencyRate1      = dataArray[13] # generated based currencyrates.csv ,countrycurrency.csv
+    self.__currencyRate2      = dataArray[14] # generated based currencyrates.csv ,countrycurrency.csv
+
+
 
 
 
@@ -72,5 +87,14 @@ class Airport():
     
   def getAirporttLongtitude(self):
     return self.__airporttLongtitude
+
+  def getCurrencyCode(self):
+    return self.__currencyCode
     
+  def getCurrencyRate1(self):
+    return self.__currencyRate1
+
+  def getCurrencyRate2(self):
+    return self.__currencyRate2
+
     

@@ -109,31 +109,33 @@ class ditData():
       # check if country exist in __airport_data
       if row[3].upper() in self.__assocCountryCurrency:
         tmp_currency_code = self.__assocCountryCurrency[row[3].upper()]
-        
+
         # check if currency symbol exists in __assocCurrencyRates
         if (tmp_currency_code in self.__assocCurrencyRates):
           row.append(tmp_currency_code)
-          row.append(self.__assocCurrencyRates[tmp_currency_code])
+          row.append(self.__assocCurrencyRates[tmp_currency_code][0]) # rate1 currency
+          row.append(self.__assocCurrencyRates[tmp_currency_code][1]) # rate2 currency
         else:
           error_codes.append(tmp_currency_code)
           row.append(False) # no currency code
-          row.append([0,0]) # no currency rate
+          row.append(0) # no currency rate
+          row.append(0) # no currency rate
       else:
         row.append(False)
-        row.append([0,0])
-        #print (row[3])
+        row.append(0) # no currency rate
+        row.append(0) # no currency rate
         error_currency.append(row[3])
       new.append(row)
     
     if (error_currency):
       cleanlist = []
       [cleanlist.append(x) for x in error_currency if x not in cleanlist]
-      print ("\nCSV files are inconsistent!!\nI can'f find currency rate for these countries:\n", cleanlist)
+      print ("\nCSV files are inconsistent!! Calculation error may occure\nI can'f find currency rate for these countries:\n", cleanlist)
 
     if (error_codes):
       cleanlist = []
       [cleanlist.append(x) for x in error_codes if x not in cleanlist]
-      print ("\nCSV files are inconsistent!!\nI can'f find currency codes for these codes", cleanlist)
+      print ("\nCSV files are inconsistent!! Calculation error may occure\nI can'f find currency codes for these codes\n", cleanlist)
 
     # print (new)
     # sys.exit(1)
